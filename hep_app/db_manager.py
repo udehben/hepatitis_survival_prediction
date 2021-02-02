@@ -1,24 +1,28 @@
-import sqlite3
-conn = sqlite3.connect('usersdata.db')
-c = conn.cursor()
-
-
+import sqlite3 as sq
 
 def create_usertable():
-    c.execute('CREATE TABLE IF NOT EXISTS userstable(username Text,password TEXT)')
+    with sq.connect("database.db") as conn:
+        c = conn.cursor()
+        c.execute('CREATE TABLE IF NOT EXISTS userstable(username Text,password TEXT)')
 
 
 def add_userdata(username, password):
-    c.execute('INSERT INTO userstable(username,password) VALUES (?,?)',(username,password))
-    conn.commit()
+    with sq.connect("database.db") as conn:
+        c = conn.cursor()
+        c.execute('INSERT INTO userstable(username,password) VALUES (?,?)',(username,password))
+        conn.commit()
 
 
 def login_user(username,password):
-    c.execute('SELECT * FROM userstable WHERE username=? AND password=?',(username,password))
-    data = c.fetchall()
-    return data
+    with sq.connect("database.db") as conn:
+        c = conn.cursor()
+        c.execute('SELECT * FROM userstable WHERE username=? AND password=?',(username,password))
+        data = c.fetchall()
+        return data
 
 def view_all_users():
-    c.execute('SELECT * FROM userstable')
-    data = c.fetchall()
+    with sq.connect("database.db") as conn:
+        c = conn.cursor()
+        c.execute('SELECT * FROM userstable')
+        data = c.fetchall()
     return data
