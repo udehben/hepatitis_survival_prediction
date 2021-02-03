@@ -47,8 +47,8 @@ feature_names_best = ['age', 'sex', 'steroid', 'antivirals', 'fatigue', 'spiders
 # Load ML Models
 def load_model(model_file):
     with open(os.path.join(model_file), 'rb') as f:
-        joblib.load(f)
-    return f
+        model = joblib.load(f)
+    return model
 
 def main():
     '''Mortality prediction App'''
