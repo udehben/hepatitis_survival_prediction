@@ -119,6 +119,7 @@ def main():
                     pretty_result = {"age":age,"sex":sex,"steroid":steroid,"antivirals":antivirals,"fatigue":fatigue,"spiders":spiders,"ascites":ascites,"varices":varices,"bilirubin":bilirubin,"alk_phosphate":alk_phosphate,"sgot":sgot,"albumin":albumin,"protime":protime,"histolog":histology}
                     st.json(pretty_result)
                     single_sample = np.array(feature_list).reshape(1,-1)
+
                     # ML
                     model_choice = st.selectbox("Select Model",["LR","KNN","DecisionTree"])
                     if st.button("Predict"):
@@ -135,8 +136,18 @@ def main():
                             prediction = loaded_model.predict(single_sample)
                             pred_prob = loaded_model.predict_proba(single_sample)
 
-                        st.write(prediction)
+                        st.write(pred_prob[0][1])
+                        if prediction == 1:
+                            st.warning('Patient Dies')
+                        else:
+                            st.success('Patient Lives')
 
+                        if pred_prob[0][1] < 0.45:
+                            st.warning(f'There is a higher probability of the Patient Dying')
+                        elif pred_prob[0][1] > 0.55:
+                            st.success(f'There is a higher probability that Patient Lives')
+                        else:
+                            st.info(f'There is aproximately equal chances of the patient living or dying')
 
 
 
